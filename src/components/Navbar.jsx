@@ -1,10 +1,9 @@
-import { useState } from 'react'
-
 export default function Navbar({ current, onNavigate }) {
   const tabs = [
     { key: 'listings', label: 'Shop Solar' },
     { key: 'lead', label: 'Get a Quote' },
     { key: 'installers', label: 'Find Installers' },
+    { key: 'quotes', label: 'Quotes' },
   ]
 
   return (

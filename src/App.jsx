@@ -1,6 +1,7 @@
 import { useEffect, useState } from 'react'
 import Navbar from './components/Navbar'
 import ListingCard from './components/ListingCard'
+import QuotesView from './components/QuotesView'
 
 const API_BASE = import.meta.env.VITE_BACKEND_URL || 'http://localhost:8000'
 
@@ -30,21 +31,27 @@ function ListingsView() {
           <h2 className="text-2xl md:text-3xl font-bold text-white">Shop Solar</h2>
           <p className="text-blue-200/80">Panels, inverters, batteries and turnkey packages</p>
         </div>
-        <button onClick={async ()=>{
-          // seed one example listing
-          const sample = {
-            title: '450W Mono PERC Panel',
-            description: 'High-efficiency Tier-1 module ideal for residential rooftops',
-            product_type: 'panel',
-            brand: 'SunPeak',
-            wattage: 450,
-            price: 219.0,
-            images: ['https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1200&auto=format&fit=crop']
-          }
-          await fetch(`${API_BASE}/listings`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(sample)})
-          const res = await fetch(`${API_BASE}/listings`)
-          setItems(await res.json())
-        }} className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm">Add sample</button>
+        <div className="flex gap-2">
+          <button onClick={async ()=>{
+            const sample = {
+              title: '450W Mono PERC Panel',
+              description: 'High-efficiency Tier-1 module ideal for residential rooftops',
+              product_type: 'panel',
+              brand: 'SunPeak',
+              wattage: 450,
+              price: 219.0,
+              images: ['https://images.unsplash.com/photo-1509395176047-4a66953fd231?q=80&w=1200&auto=format&fit=crop']
+            }
+            await fetch(`${API_BASE}/listings`, {method:'POST', headers:{'Content-Type':'application/json'}, body: JSON.stringify(sample)})
+            const res = await fetch(`${API_BASE}/listings`)
+            setItems(await res.json())
+          }} className="px-3 py-2 bg-blue-500 hover:bg-blue-600 text-white rounded-md text-sm">Add sample</button>
+          <button onClick={async ()=>{
+            await fetch(`${API_BASE}/seed`, { method: 'POST' })
+            const res = await fetch(`${API_BASE}/listings`)
+            setItems(await res.json())
+          }} className="px-3 py-2 bg-emerald-500 hover:bg-emerald-600 text-white rounded-md text-sm">Seed all mock data</button>
+        </div>
       </div>
       {loading ? (
         <div className="text-blue-200">Loading...</div>
@@ -157,6 +164,7 @@ function App() {
       {tab === 'listings' && <ListingsView />}
       {tab === 'lead' && <LeadForm />}
       {tab === 'installers' && <InstallersView />}
+      {tab === 'quotes' && <QuotesView />}
       <footer className="py-10 text-center text-blue-300/60">Powered by Flames</footer>
     </div>
   )
